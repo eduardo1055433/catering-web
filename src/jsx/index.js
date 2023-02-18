@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext,lazy } from "react";
 
 /// React router dom
 import {  Routes, Route, Outlet  } from "react-router-dom";
@@ -140,6 +140,9 @@ import VentasProducto from "./pages/Reportes/VentasProducto";
 import VentasDetalle from "./pages/Reportes/VentasDetalle";
 import VentasCliente from "./pages/Reportes/VentasCliente";
 import Test from "./pages/Reportes/test";
+
+//llazo
+const NotFount = lazy(() => import('../jsx/pages/Error404'));
 
 const Markup = () => {
   //const { menuToggle } = useContext(ThemeContext);
@@ -327,6 +330,8 @@ const Markup = () => {
                 />
               ))}
           </Route>
+          <Route path='/*' element={<NotFount />} />
+
       </Routes>
       <Setting />
 	  <ScrollToTop />

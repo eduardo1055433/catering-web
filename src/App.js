@@ -15,6 +15,8 @@ import "slick-carousel/slick/slick-theme.css";
 
 const SignUp = lazy(() => import('./jsx/pages/Registration'));
 const ForgotPassword = lazy(() => import('./jsx/pages/ForgotPassword'));
+const NotFount = lazy(() => import('./jsx/pages/Error404'));
+
 const Login = lazy(() => {
     return new Promise(resolve => {
     setTimeout(() => resolve(import('./jsx/pages/Login')), 500);
@@ -55,7 +57,7 @@ function App (props) {
         <Route path='/login' element={<Login />} />
         <Route path='/page-register' element={<SignUp />} />
         <Route path='/page-forgot-password' element={<ForgotPassword />} />
-        {/*<Route path='/*' element={<><h1>PERDIDO</h1></>} />*/}
+        <Route path='/*' element={<NotFount />} />
       </Routes> 
     );
     if (props.isAuthenticated) {
