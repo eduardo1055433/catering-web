@@ -24,6 +24,7 @@
     "export-to-csv": "^0.2.1",
     "formik": "^2.2.9",
     "framer-motion": "^8.0.2",
+    "jwt-decode": "^3.1.2",
     "lightgallery": "^2.7.0",
     "material-react-table": "^1.7.4",
     "moment": "^2.29.4",

@@ -73,7 +73,7 @@ export const useCounterStore = create<CounterState>((set, get) => ({
 
 export const TemporalStoreFiltros = create<FiltroSisplani>((set,get) => ({
   StrFechaInicio: "2023-01-01",
-  StrFechaFin: "2023-04-04",
+  StrFechaFin: "2023-01-31",
   Strtipocliente: "TODOS",
   Strunidad: "TODOS",
   Strsubdivision: "TODOS",

@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 //import './index.css';
-import App from './App';
+//import App from './App';
+import App from './Rutas';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from 'react-router-dom';
+import {  BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './services/authProvider';
 import {Provider} from 'react-redux';
 import {store} from './store/store';
 import  ThemeContext  from "./context/ThemeContext"; 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+    /*
     <Provider store = {store}>
       <BrowserRouter>
         <ThemeContext>
@@ -18,7 +20,15 @@ root.render(
         </ThemeContext>
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+    */ 
+    <BrowserRouter>
+      <AuthProvider>
+        <ThemeContext>
+          <App />
+        </ThemeContext>
+      </AuthProvider>
+    </BrowserRouter>
+
 );
 
 // If you want to start measuring performance in your app, pass a function

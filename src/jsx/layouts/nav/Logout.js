@@ -2,7 +2,7 @@ import React  from 'react';
 import {connect, useDispatch } from 'react-redux';
 //import { Link, withRouter } from 'react-router-dom';
 import {  useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Logout } from '../../../store/actions/AuthActions';
+//import { Logout } from '../../../store/actions/AuthActions';
 import { isAuthenticated } from '../../../store/selectors/AuthSelectors';
 
 function withRouter(Component) {
@@ -22,11 +22,13 @@ function withRouter(Component) {
   }
 
 function LogoutPage(){
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    //const dispatch = useDispatch();
+    //const navigate = useNavigate();
     function onLogout() {
-       dispatch(Logout(navigate));
-       // window.location.reload();
+       //dispatch(Logout(navigate));
+       sessionStorage.clear();
+       window.location.reload();
+
     }
     return(
         <>
@@ -47,8 +49,8 @@ function LogoutPage(){
 } 
 const mapStateToProps = (state) => {
     return {
-        isAuthenticated: isAuthenticated(state),
+        //isAuthenticated: isAuthenticated(state),
     };
 };
 
-export default withRouter(connect(mapStateToProps)(LogoutPage));
+export default LogoutPage;

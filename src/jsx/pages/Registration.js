@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { connect, useDispatch } from 'react-redux';
-import logo from '../../images/logo-full.png'
+//import { connect, useDispatch } from 'react-redux';
+import logoito from '../../images/logo-full.png'
 import Loader from '../pages/Loader/Loader';
 import {
     loadingToggleAction,
@@ -13,7 +13,7 @@ function Register(props) {
     const [errors, setErrors] = useState(errorsObj);
     const [password, setPassword] = useState('');
 
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
     const navigate = useNavigate();
 
     function onSignUp(e) {
@@ -33,12 +33,13 @@ function Register(props) {
         setErrors(errorObj);
 
         if (error) return;
-        dispatch(loadingToggleAction(true));
+        //dispatch(loadingToggleAction(true));
 
-        dispatch(signupAction(email, password, navigate));
+        //dispatch(signupAction(email, password, navigate));
     }
   return (
-    <div className='authincation h-100 p-meddle'>
+    <div className='h-100 p-meddle'>
+        <br></br>
         <div className='container h-100'>
             <div className='row justify-content-center h-100 align-items-center'>
                 <div className='col-md-6'>
@@ -48,7 +49,7 @@ function Register(props) {
                                 {props.showLoading && <Loader />}
                                 <div className='auth-form'>
                                     <div className='text-center mb-3'>
-                                        <img src={logo} alt="" />
+                                        <img src={logoito} alt="" />
                                     </div>
 
                                     <h4 className='text-center mb-4 text-white'>Sign up your account</h4>
@@ -122,4 +123,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(Register);
+export default Register;

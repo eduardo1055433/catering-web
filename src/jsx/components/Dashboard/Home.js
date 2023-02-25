@@ -33,6 +33,7 @@ function Home() {
 	const { changeBackground       
      } = useContext(ThemeContext);
 	useEffect(() => {
+		console.log("DASBOARDDD");
 		changeBackground({ value: "dark", label: "Dark" });
 	}, []);
 	return(

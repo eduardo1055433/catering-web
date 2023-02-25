@@ -11,6 +11,7 @@ import { useCounterStore,TemporalStoreFiltros } from "../../../store/counter.sto
 import { ModalSisplani,ModalSisplaniBasic} from "../../components/Sisplani/Modal/MdlFiltroReportes";
 import { Row, Card, Col,Button, Modal, Container,Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import jwt from 'jwt-decode' // import dependency
 
 const columns = [    
   {
@@ -96,10 +97,14 @@ export const Example = () => {
 
 
     const getData = async () => {
-    
+      const userToken = sessionStorage.getItem('user-token');
+      var decoded = jwt(userToken);
+      console.log(decoded);
+      var esquema = decoded.user.schemas[0];
+      var base = decoded.user.schemas[1];
 
         var data = JSON.stringify({
-          "cschema": "modelo",
+          "cschema": esquema,
           "cclie_tipo": Strtipocliente,
           "dfecha_ini": StrFechaInicio,
           "dfecha_fin": StrFechaFin,
@@ -110,7 +115,7 @@ export const Example = () => {
           "cccosto_id": Strcosto,
           "cpos_hdserie": Strpuntoventa,
           "cserv_id": Strservicio,
-          "cvc_modo": "TODOS",
+          "cvc_modo": Strtipoventa,
           "cprod_muestra": "NOPROD"
         });
         console.log(StrFechaInicio);
@@ -119,6 +124,7 @@ export const Example = () => {
         maxBodyLength: Infinity,
           url: 'https://api-catering.sisplani.com/reportes/ventas-facturar-x-ticket',
           headers: { 
+            'Authorization': 'Bearer '+userToken, 
             'Content-Type': 'application/json'
           },
           data : data
@@ -138,7 +144,7 @@ export const Example = () => {
     
     
  useEffect( ()=>{
-        getData();
+  getData();
 }, [])  
 const CargarNewChanges = () => {
   getData();

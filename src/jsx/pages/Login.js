@@ -1,28 +1,33 @@
-import React, { useState } from 'react'
-import { connect, useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom'
-import { loadingToggleAction,loginAction,
-} from '../../store/actions/AuthActions';
-
+import React, { useState,useContext,useEffect } from 'react'
+import { useNavigate, useLocation } from "react-router";
+import { Link } from 'react-router-dom'
+import AuthContext from "../../services/authProvider";
+import axios from "axios"
 //
 import logo from '../../images/logo-2.png'
 import login from "../../images/bg-login2.png";
 import loginbg from "../../images/bg-login.jpg";
+import jwt from 'jwt-decode' // import dependency
+
+const url = "http://localhost:8881/Login";//"https://api-catering.sisplani.com/auth/login";
 
 function Login (props) {
-    const navigate = useNavigate();
-    const [email, setEmail] = useState('demo@example.com');
-    let errorsObj = { email: '', password: '' };
-    const [errors, setErrors] = useState(errorsObj);
-    const [password, setPassword] = useState('123456');
-    const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  let errorsObj = { email: '', password: '' };
+  const from = "/dashboard";
+  const { auth, setAuth } = useContext(AuthContext);
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [errors, setErrors] = useState(errorsObj);
+  
     function onLogin(e) {
         e.preventDefault();
         let error = false;
         const errorObj = { ...errorsObj };
-        if (email === '') {
-            errorObj.email = 'Email is Required';
+        if (name === '') {
+            errorObj.name = 'Email is Required';
             error = true;
         }
         if (password === '') {
@@ -30,13 +35,57 @@ function Login (props) {
             error = true;
         }
         setErrors(errorObj);
+        console.log(error);
+
         if (error) {
+
           return ;
         }
-		    dispatch(loadingToggleAction(true));	
-        dispatch(loginAction(email, password, navigate));
-    }
+        var data = JSON.stringify({
+          "username": "eroque",
+          "password": "1033156"
+        });
 
+        var config = {
+          method: "post",
+          maxBodyLength: Infinity,
+          url: "https://api-catering.sisplani.com/auth/login",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: data,
+        };
+
+        axios(config)
+        .then(function (response) {
+          var decoded = jwt(response.data.token);
+          console.log(decoded);
+
+          if (decoded.message) {
+            console.log(decoded.message);
+            const role = [decoded.role];
+            const token = response.data.token;
+            const ruta = response.data.token;
+
+            setAuth({ role, token, name });
+            console.log(auth);
+            sessionStorage.setItem('user-token', token);
+            //sessionStorage.setItem('user-ruta', ruta);
+
+            setName('');
+            setPassword('');
+            
+            navigate(from, { replace: true });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+    }
+    useEffect(() => {
+      sessionStorage.clear();
+    }, []);
   return (
         <div className="login-main-page" style={{backgroundImage:"url("+ loginbg +")"}}>
             <div className="login-wrapper">
@@ -86,10 +135,10 @@ function Login (props) {
                                           <strong>Email</strong>
                                         </label>
                                         <input type="email" className="form-control"
-                                          value={email}
-                                           onChange={(e) => setEmail(e.target.value)}
+                                          value={name}
+                                           onChange={(e) => setName(e.target.value)}
                                         />
-                                      {errors.email && <div className="text-danger fs-12">{errors.email}</div>}
+                                      {errors.name && <div className="text-danger fs-12">{errors.name}</div>}
                                     </div>
                                     <div className="form-group">
                                         <label className="mb-2 "><strong>Password</strong></label>
@@ -157,4 +206,4 @@ const mapStateToProps = (state) => {
         showLoading: state.auth.showLoading,
     };
 };
-export default connect(mapStateToProps)(Login);
+export default Login;

@@ -13,19 +13,20 @@ export function signUp(email, password) {
         returnSecureToken: true,
     };
     return axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD3RPAp3nuETDn9OQimqn_YF6zdzqWITII`,
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB_4yvwSe8Qs9jLxWCrTKa6bDESp5OvVbs`,
         postData,
     );
 }
 
 export function login(email, password) {
+     
     const postData = {
         email,
         password,
         returnSecureToken: true,
     };
     return axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD3RPAp3nuETDn9OQimqn_YF6zdzqWITII`,
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB_4yvwSe8Qs9jLxWCrTKa6bDESp5OvVbs`,
         postData,
     );
 }
@@ -57,6 +58,8 @@ export function saveTokenInLocalStorage(tokenDetails) {
         new Date().getTime() + tokenDetails.expiresIn * 10000,
     );
     localStorage.setItem('userDetails', JSON.stringify(tokenDetails));
+    console.log("Token Guardado");
+
 }
 
 export function runLogoutTimer(dispatch, timer, navigate) {
@@ -68,6 +71,7 @@ export function runLogoutTimer(dispatch, timer, navigate) {
 
 export function checkAutoLogin(dispatch, navigate) {
     const tokenDetailsString = localStorage.getItem('userDetails');
+    console.log("tokenDetailsString------------->"+tokenDetailsString);
     let tokenDetails = '';
     if (!tokenDetailsString) {
         dispatch(Logout(navigate));
@@ -78,6 +82,7 @@ export function checkAutoLogin(dispatch, navigate) {
     let expireDate = new Date(tokenDetails.expireDate);
     let todaysDate = new Date();
 
+    console.log("ssssssssssssssssssssssssssssss!")
     if (todaysDate > expireDate) {
         dispatch(Logout(navigate));
         return;

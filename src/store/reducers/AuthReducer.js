@@ -22,6 +22,7 @@ const initialState = {
 
 export function AuthReducer(state = initialState, action) {
     if (action.type === SIGNUP_CONFIRMED_ACTION) {
+        
         return {
             ...state,
             auth: action.payload,

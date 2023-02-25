@@ -6,6 +6,7 @@ import moment from 'moment';
 import axios from "axios";
 //import Example from "../../../pages/Reportes/VentasProducto.js"; 
 import  CerrarModalOK from "../../../pages/Reportes/VentasProducto.js"; 
+import jwt from 'jwt-decode' // import dependency
 
 export function ModalSisplaniBasic(props){
 /*---------------------Variables---------------------*/
@@ -63,14 +64,22 @@ const MostrarModal = async () => {
   }
   };
 const GetFiltros = async () => {
+  const userToken = sessionStorage.getItem('user-token');
+  var decoded = jwt(userToken);
+  console.log(decoded);
+  var esquema = "general";//decoded.user.schemas[0];
+  var base = decoded.user.schemas[1];
 
   var config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: "https://api-catering.sisplani.com/reportes/filtros/general/modelo",
-    headers: {},
+    url: "https://api-catering.sisplani.com/reportes/filtros/"+esquema+"/"+base+"",
+    headers: {
+      'Authorization': 'Bearer '+userToken, 
+      'Content-Type': 'application/json'
+    },
   };
-
+ 
   axios(config)
     .then(function (response) {
       //if(Strtipocliente === "" &&  Strtipoventa === ""){
@@ -274,7 +283,7 @@ useEffect( ()=>{
                       <option value={"TODOS"}>Todos</option>
                         {
                           Array.isArray(ZonaList) &&(
-                            ZonaList.map(elemento=>(<option key={elemento.cat_id} value={elemento.cat_id}>{elemento.cat_descri}</option>))                    
+                            ZonaList.map(elemento=>(<option key={elemento.zona_id} value={elemento.zona_id}>{elemento.zona_descri}</option>))                    
                          )                           
                         }                      
                       </Form.Select>
@@ -287,7 +296,7 @@ useEffect( ()=>{
                       <option value={"TODOS"}>Todos</option>
                         {
                           Array.isArray(CostoList) &&(
-                            CostoList.map(elemento=>(<option key={elemento.cat_id} value={elemento.cat_id}>{elemento.cat_descri}</option>))                    
+                            CostoList.map(elemento=>(<option key={elemento.ccosto_id} value={elemento.ccosto_id}>{elemento.ccosto_descri}</option>))                    
                          )                           
                         }                     
                       </Form.Select>

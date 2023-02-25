@@ -8,6 +8,7 @@ import shallow from "zustand/shallow";
 import { useCounterStore,TemporalStoreFiltros } from "../../../store/counter.store.tsx";
 import { ModalSisplani,ModalSisplaniBasic} from "../../components/Sisplani/Modal/MdlFiltroReportes";
 import { Row, Card, Col,Button, Modal, Container,Form } from "react-bootstrap";
+import jwt from 'jwt-decode' // import dependency
 
 //defining columns outside of the component is fine, is stable
 const columns = [    
@@ -63,10 +64,14 @@ const Example = () => {
     const handleExportData = () => { csvExporter.generateCsv(products); };
 
     const getData = async () => {
-    
+      const userToken = sessionStorage.getItem('user-token');
+      var decoded = jwt(userToken);
+      console.log(decoded);
+      var esquema = decoded.user.schemas[0];
+      var base = decoded.user.schemas[1];
 
         var data = JSON.stringify({
-            "cschema": "modelo",
+            "cschema": esquema,
             "cclie_tipo": Strtipocliente,
             "dfecha_ini": StrFechaInicio,
             "dfecha_fin": StrFechaFin,
@@ -77,7 +82,7 @@ const Example = () => {
             "cccosto_id": Strcosto,
             "cpos_hdserie": Strpuntoventa,
             "cserv_id": Strservicio,
-            "cvc_modo": "TODOS"
+            "cvc_modo": Strtipoventa
         });
     
         var config = {
@@ -85,6 +90,7 @@ const Example = () => {
           maxBodyLength: Infinity,
           url: 'https://api-catering.sisplani.com/reportes/ventas-x-producto',
           headers: { 
+            'Authorization': 'Bearer '+userToken, 
             'Content-Type': 'application/json'
           },
           data : data

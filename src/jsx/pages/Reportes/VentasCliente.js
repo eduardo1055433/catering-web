@@ -9,6 +9,7 @@ import { useCounterStore,TemporalStoreFiltros } from "../../../store/counter.sto
 import { ModalSisplani,ModalSisplaniBasic} from "../../components/Sisplani/Modal/MdlFiltroReportes";
 import { Row, Card, Col,Button, Modal, Container,Form } from "react-bootstrap";
 import columnsVentasProducto from "./Columnas"
+import jwt from 'jwt-decode' // import dependency
 
 //defining columns outside of the component is fine, is stable
 const columns = [    
@@ -102,12 +103,17 @@ const Example = () => {
 
     
     const getData = async () => {
-    
+      const userToken = sessionStorage.getItem('user-token');
+      var decoded = jwt(userToken);
+      console.log(decoded);
+      var esquema = decoded.user.schemas[0];
+      var base = decoded.user.schemas[1];
+
 
         var data = JSON.stringify({
-            "cschema": "modelo",
+            "cschema": esquema,
             "cclie_tipo": Strtipocliente,
-            "cclie_docnum": "",
+            "cclie_docnum": "",//
             "dfecha_ini": StrFechaInicio,
             "dfecha_fin": StrFechaFin,
             "cunid_id": Strunidad,
@@ -117,12 +123,13 @@ const Example = () => {
             "cccosto_id": Strcosto,
             "cpos_hdserie": Strpuntoventa
         });
-    
+        console.log(Strtipocliente+" "+StrFechaInicio+" "+StrFechaFin+" "+Strunidad+" "+Strzona+" "+Strsubdivision+" "+Strcategoria+" "+Strcosto+" "+Strpuntoventa);
         var config = {
           method: 'post',
         maxBodyLength: Infinity,
           url: 'https://api-catering.sisplani.com/reportes/ventas-facturar-x-cliente-datos',
           headers: { 
+            'Authorization': 'Bearer '+userToken, 
             'Content-Type': 'application/json'
           },
           data : data

@@ -1,4 +1,4 @@
-import React, { useContext,lazy } from "react";
+import React, { useContext,lazy,Suspense } from "react";
 
 /// React router dom
 import {  Routes, Route, Outlet  } from "react-router-dom";
@@ -130,6 +130,8 @@ import Error403 from "./pages/Error403";
 import Error404 from "./pages/Error404";
 import Error500 from "./pages/Error500";
 import Error503 from "./pages/Error503";
+import Unauthorized from "./pages/Unauthorized";
+
 import Setting from "./layouts/Setting";
 import { ThemeContext } from "../context/ThemeContext";
 import Reports from "./pages/Reports";
@@ -140,6 +142,9 @@ import VentasProducto from "./pages/Reportes/VentasProducto";
 import VentasDetalle from "./pages/Reportes/VentasDetalle";
 import VentasCliente from "./pages/Reportes/VentasCliente";
 import Test from "./pages/Reportes/test";
+
+import LoginPrincipal from '../jsx/pages/Login'
+import Auth from '../services/Auth';
 
 //llazo
 const NotFount = lazy(() => import('../jsx/pages/Error404'));
@@ -263,16 +268,14 @@ const Markup = () => {
     { url: "form-validation", component: <FormValidation /> },
 
     /// table
-	{ url: 'table-filtering', component: <FilteringTable /> },
+	  { url: 'table-filtering', component: <FilteringTable /> },
     { url: 'table-sorting', component: <SortingTable /> },
     { url: "table-datatable-basic", component: <DataTable /> },
     { url: "table-bootstrap-basic", component: <BootstrapTable /> },
 
     /// pages
-    { url: "page-register", component: <Registration /> },
     { url: "page-lock-screen", component: <LockScreen /> },
     { url: "page-login", component: <Login /> },
-    { url: "page-forgot-password", component: <ForgotPassword /> },
     { url: "page-error-400", component: <Error400/> },
     { url: "page-error-403", component: <Error403/> },
     { url: "page-error-404", component: <Error404 /> },
@@ -285,34 +288,17 @@ const Markup = () => {
 
   let pagePath = path.split("-").includes("page");
   return (
-    <>
-      {/* <div
-        id={`${!pagePath ? "main-wrapper" : ""}`}
-        className={`${!pagePath ? "show" : "mh100vh"}  ${
-          menuToggle ? "menu-toggle" : ""
-        }`}
-      >
-        {!pagePath && <Nav />}
-
-        <div className={`${!pagePath ? "content-body" : ""}`}>
-          <div
-            className={`${!pagePath ? "container-fluid" : ""}`}
-            style={{ minHeight: window.screen.height - 60 }}
+    <>    
+    <Suspense fallback={
+              <div id="preloader">
+                  <div className="sk-three-bounce">
+                      <div className="sk-child sk-bounce1"></div>
+                      <div className="sk-child sk-bounce2"></div>
+                      <div className="sk-child sk-bounce3"></div>
+                  </div>
+              </div>  
+              }
           >
-            <Switch>
-              {routes.map((data, i) => (
-                <Route
-                  key={i}
-                  exact
-                  path={`/${data.url}`}
-                  component={data.component}
-                />
-              ))}
-            </Switch>
-          </div>
-        </div>
-        {!pagePath && <Footer />}
-      </div> */}
       <Routes>
           <Route path='page-lock-screen' element= {<LockScreen />} />
           <Route path='page-error-400' element={<Error400/>} />
@@ -320,19 +306,25 @@ const Markup = () => {
           <Route path='page-error-404' element={<Error404/>} />
           <Route path='page-error-500' element={<Error500/>} />
           <Route path='page-error-503' element={<Error503/>} />
-          <Route  element={<MainLayout />} > 
-              {allroutes.map((data, i) => (
-                <Route
-                  key={i}
-                  exact
-                  path={`${data.url}`}
-                  element={data.component}
-                />
-              ))}
-          </Route>
+          <Route path="Login" element={<LoginPrincipal/>} />
+          <Route path='page-register' element={<Registration />} />
+          <Route path='page-forgot-password' element={<ForgotPassword />} />
+          <Route path='unauthorized' element={<Unauthorized />} />
+
+
+          
+            <Route  element={<MainLayout />} > 
+                {allroutes.map((data, i) => (
+                  <Route element={<Auth allowedRoles={['admin']} />} >
+                    <Route key={i} exact path={`${data.url}`} element={data.component} />
+                  </Route>
+                ))}
+            </Route>
+          
           <Route path='/*' element={<NotFount />} />
 
       </Routes>
+      </Suspense>
       <Setting />
 	  <ScrollToTop />
     </>

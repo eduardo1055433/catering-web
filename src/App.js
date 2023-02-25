@@ -100,6 +100,7 @@ function App (props) {
 
 
 const mapStateToProps = (state) => {
+  console.log("xdssss");
     return {
         isAuthenticated: isAuthenticated(state),
     };

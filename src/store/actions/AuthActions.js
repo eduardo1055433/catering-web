@@ -56,12 +56,14 @@ export function loginAction(email, password, navigate) {
     return (dispatch) => {
          login(email, password)
             .then((response) => { 
+
                 saveTokenInLocalStorage(response.data);
                 runLogoutTimer(
                     dispatch,
                     response.data.expiresIn * 1000,
                     navigate,
                 );
+               console.log(response);
                dispatch(loginConfirmedAction(response.data));
 			   //console.log('kk------1');
 			   //console.log(kk);
@@ -69,7 +71,8 @@ export function loginAction(email, password, navigate) {
 			   //console.log('kk------2');
 			   //return response.data;
 				//return 'success';
-				//history.push('/dashboard');                
+				//history.push('/dashboard');     
+                console.table(response.data);           
 				navigate('/dashboard');                
             })
             .catch((error) => {
