@@ -44,7 +44,7 @@ function Home() {
 						<div className="card-body">
 							<div className="d-sm-flex d-block pb-sm-3 align-items-end">
 								<div className="me-auto pr-3 mb-2 mb-sm-0">
-									<span className="text-white fs-20 font-w200 d-block mb-sm-3 mb-2">Ticket Sold Today</span>
+									<span className="text-white fs-20 font-w200 d-block mb-sm-3 mb-2">Boleto vendido hoy</span>
 									<h2 className="fs-40 text-white mb-0">456,502<span className="fs-18 ms-2">pcs</span></h2>
 								</div>
 								<div className="d-flex flex-wrap">

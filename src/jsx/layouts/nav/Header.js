@@ -53,6 +53,7 @@ const Header = ({ onNote, toggle, onProfile, onNotification, onClick }) => {
 						</div>
 					</div> 	
 					<ul className="navbar-nav header-right">
+						{/*
 						<li className="nav-item">
 							<div className="input-group search-area ms-auto d-inline-flex">
 								<input type="text" className="form-control" placeholder="Search here"  />
@@ -62,9 +63,6 @@ const Header = ({ onNote, toggle, onProfile, onNotification, onClick }) => {
 							</div>
 						</li>
 						<li className="nav-item dropdown notification_dropdown">
-							{/* <Link to={"#"} className="btn btn-primary  d-md-block d-none">
-								<i className="fa fa-cog scale5" aria-hidden="true"></i>
-							</Link> */}
 							<Link to={"#"} className="nav-link bell dz-theme-mode active">
 								<i id="icon-light" className="far fa-sun"></i>
 								<i id="icon-dark" className="far fa-moon"></i>
@@ -300,6 +298,7 @@ const Header = ({ onNote, toggle, onProfile, onNotification, onClick }) => {
 								</PerfectScrollbar>
 							</Dropdown.Menu>
 						</Dropdown>
+						*/}
 						<Dropdown as="li" className="nav-item header-profile ">
 							<Dropdown.Toggle as="a" to="#" variant="" className="nav-link i-false c-pointer">								
 								<img src={profile} width="20" alt=""/>

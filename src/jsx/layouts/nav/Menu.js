@@ -7,8 +7,8 @@ export const MenuList = [
         iconStyle: <i className="flaticon-381-id-card" />,
         content:[
             {
-                title:'Test Parametros',
-                to:'Test'
+                //title:'Test Parametros',
+                //to:'Test'
             },
             {
                 title:'Ventas por Ticket',

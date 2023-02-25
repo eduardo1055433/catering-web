@@ -15,7 +15,7 @@ function Login (props) {
   const navigate = useNavigate();
   const location = useLocation();
   let errorsObj = { email: '', password: '' };
-  const from = "/dashboard";
+  const from = "/VentasTicket";
   const { auth, setAuth } = useContext(AuthContext);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
